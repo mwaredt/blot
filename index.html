@@ -79,7 +79,7 @@
     position:absolute;left:50%;top:150px;transform:translateX(-50%);
     width:40px;height:40px;border-radius:50%;background:var(--card);
     border:1px solid #3a3a3e;display:flex;align-items:center;justify-content:center;
-    cursor:pointer;z-index:3;font-size:18px;color:#cfcfd3;
+    cursor:default;z-index:3;font-size:18px;color:#cfcfd3;pointer-events:none;
   }
 
   /* actions */
@@ -102,6 +102,7 @@
     font-size:22px;outline:none;font-variant-numeric:tabular-nums;-webkit-user-select:text;user-select:text;
   }
   .hint{text-align:center;color:#55555a;font-size:12px;margin-top:16px}
+  .copyright{text-align:center;color:var(--gold);opacity:.75;font-size:12px;font-weight:600;margin-top:18px;letter-spacing:.2px}
 </style>
 </head>
 <body>
@@ -130,7 +131,7 @@
       <!-- center pad -->
       <div class="pad">
         <button class="calc" id="calcBtn">احسب</button>
-        <div class="pie" id="pieBtn" title="الخط 152">◔</div>
+        <div class="pie" title="الهدف 152 (ثابت)">◔</div>
         <label class="circle lahom">
           <input id="curLahom" type="number" inputmode="numeric" placeholder="0">
         </label>
@@ -148,21 +149,24 @@
       <!-- table -->
       <div class="tbl" id="tbl"></div>
 
-      <div class="hint">اكتب نقاط كل فريق في الدائرة ثم اضغط «احسب» • الخط <span id="tgtTxt">152</span></div>
+      <div class="hint">اكتب نقاط كل فريق في الدائرة ثم اضغط «احسب» • الهدف <span id="tgtTxt">152</span></div>
     </div>
+    <div class="copyright">جميع الحقوق محفوظة — موارد التقنية</div>
   </div>
 
 <script>
   const KEY="baloot_abukhaled_v3";
   const $=id=>document.getElementById(id);
 
+  const TARGET=152;               // الهدف ثابت لا يتغيّر
   const state=load();
   function load(){
     try{const d=JSON.parse(localStorage.getItem(KEY));
       if(d&&Array.isArray(d.rounds))return d;}catch(e){}
-    return {rounds:[],target:152,nameLana:"لنا",nameLahom:"لهم"};
+    return {rounds:[],target:TARGET,nameLana:"لنا",nameLahom:"لهم"};
   }
   function save(){localStorage.setItem(KEY,JSON.stringify(state));}
+  state.target=TARGET; save();   // الهدف 152 ثابت دائماً
 
   function totals(){
     let a=0,b=0;
@@ -175,7 +179,6 @@
     $("totLana").textContent=a;
     $("totLahom").textContent=b;
     $("tgtTxt").textContent=state.target;
-    $("pieBtn").title="الخط "+state.target;
 
     // crown at target
     $("crownR").textContent = (a>=state.target && a>=b) ? "👑" : "";
@@ -215,11 +218,6 @@
     if(confirm("صكة جديدة؟ بيتم مسح كل الجولات.")){
       state.rounds=[];save();render();
     }
-  });
-
-  $("pieBtn").addEventListener("click",()=>{
-    const t=prompt("رقم الخط (الهدف):", state.target);
-    if(t!==null){const n=parseInt(t,10); if(n>0){state.target=n;save();render();}}
   });
 
   // editable team names
