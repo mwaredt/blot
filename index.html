@@ -108,15 +108,15 @@
       <!-- scores -->
       <div class="scores">
         <div class="side">
-          <div class="crown" id="crownL"></div>
-          <div class="lbl">لهم</div>
-          <div class="val" id="totLahom">0</div>
-        </div>
-        <div class="arrow" id="arrow">➜</div>
-        <div class="side">
           <div class="crown" id="crownR"></div>
           <div class="lbl">لنا</div>
           <div class="val" id="totLana">0</div>
+        </div>
+        <div class="arrow" id="arrow">➜</div>
+        <div class="side">
+          <div class="crown" id="crownL"></div>
+          <div class="lbl">لهم</div>
+          <div class="val" id="totLahom">0</div>
         </div>
       </div>
 
@@ -169,7 +169,7 @@
     $("tgtTxt").textContent=state.target;
     $("pieBtn").title="الخط "+state.target;
 
-    // arrow points toward leader
+    // arrow points toward leader (لنا right, لهم left)
     const ar=$("arrow");
     ar.classList.toggle("left", b>a);   // if لهم leads, point left
     ar.style.opacity = (a===b)?".35":"1";
