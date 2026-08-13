@@ -72,7 +72,7 @@
   }
 
   /* actions */
-  .acts{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;margin:8px 0 6px}
+  .acts{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:16px;margin:8px 0 6px}
   .lnk{background:none;border:none;font-size:16px;font-weight:700;cursor:pointer;padding:6px 2px}
   .lnk.new{color:var(--green);border-bottom:2px solid var(--green);justify-self:end}
   .lnk.undo{color:var(--red);border-bottom:2px solid var(--red);justify-self:start}
@@ -135,7 +135,6 @@
       <!-- actions -->
       <div class="acts">
         <button class="lnk new" id="newBtn">صكة جديدة</button>
-        <button class="pill" id="suitBtn">دق الولد ♣</button>
         <button class="lnk undo" id="undoBtn">تراجع</button>
       </div>
 
@@ -149,8 +148,6 @@
 <script>
   const KEY="baloot_abukhaled_v3";
   const $=id=>document.getElementById(id);
-  const SUITS=["♣","♦","♥","♠"];
-
   const state=load();
   function load(){
     try{const d=JSON.parse(localStorage.getItem(KEY));
@@ -171,7 +168,6 @@
     $("totLahom").textContent=b;
     $("tgtTxt").textContent=state.target;
     $("pieBtn").title="الخط "+state.target;
-    $("suitBtn").innerHTML="دق الولد "+SUITS[state.suit%4];
 
     // arrow points toward leader
     const ar=$("arrow");
@@ -216,10 +212,6 @@
     if(confirm("صكة جديدة؟ بيتم مسح كل الجولات.")){
       state.rounds=[];save();render();
     }
-  });
-
-  $("suitBtn").addEventListener("click",()=>{
-    state.suit=(state.suit+1)%4;save();render();
   });
 
   $("pieBtn").addEventListener("click",()=>{
